@@ -51,11 +51,7 @@ export function useTasks(view: View): UseTasks {
   const [state, setState] = useState<TasksState>(initialState);
   const busy = useBusyIds();
 
-  // Bumping this re-runs the effect below, which is how reload() works.
   const [reloadToken, setReloadToken] = useState(0);
-
-  // Guards against a slow response from a previous view overwriting the
-  // current one after the user has already switched.
   const requestRef = useRef(0);
 
   useEffect(() => {
@@ -86,12 +82,6 @@ export function useTasks(view: View): UseTasks {
 
   const reload = useCallback(() => setReloadToken((n) => n + 1), []);
 
-  /**
-   * Runs one write with the calling task marked busy, then applies `onDone`.
-   *
-   * A 409 means someone else changed the task, so the only useful response is
-   * to reload and show what is actually there now.
-   */
   const markBusy = busy.add;
   const clearBusy = busy.remove;
 
@@ -144,8 +134,6 @@ export function useTasks(view: View): UseTasks {
         }));
         return created;
       } catch (error: unknown) {
-        // Rethrown so the dialog can show field errors next to its inputs and
-        // stay open instead of closing over a failed submit.
         if (error instanceof ApiError && Object.keys(error.fields).length > 0) throw error;
         setState((current) => ({ ...current, mutationError: messageFor(error) }));
         return null;
@@ -174,8 +162,6 @@ export function useTasks(view: View): UseTasks {
     [mutate, replace],
   );
 
-  // Archiving and restoring each remove the task from the list currently on
-  // screen, because the board and the archive show opposite sets.
   const archiveTask = useCallback(
     (task: Task) =>
       mutate(task.id, async () => {

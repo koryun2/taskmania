@@ -8,7 +8,6 @@ export interface ColumnConfig {
   hint: string;
 }
 
-/** The three board columns, in the order they are drawn. */
 export const COLUMNS: readonly ColumnConfig[] = [
   { status: "todo", title: "To do", hint: "Not started yet" },
   { status: "in_progress", title: "In progress", hint: "Being worked on" },

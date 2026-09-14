@@ -32,9 +32,9 @@ services:
       db:
         condition: service_healthy
 
-  web:
+  taskmania:
     build:
-      context: ./web
+      context: ./taskmania
       args:
         # Relative, so the browser calls nginx and nginx proxies to the API.
         VITE_API_BASE: /api

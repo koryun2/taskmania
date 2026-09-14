@@ -12,8 +12,6 @@ interface TaskBoardProps {
 }
 
 export function TaskBoard({ tasks, isBusy, actions, onAddToColumn }: TaskBoardProps) {
-  // One pass instead of a filter per column, and memoised so dragging a card
-  // between columns does not re-bucket on unrelated renders.
   const byStatus = useMemo(() => {
     const groups: Record<Status, Task[]> = { todo: [], in_progress: [], done: [] };
     for (const task of tasks) {

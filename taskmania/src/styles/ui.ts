@@ -1,8 +1,6 @@
 import styled, { css } from "styled-components";
 import { theme } from "./theme";
 
-/** Shared primitives. Anything used by more than one component lives here. */
-
 export const Page = styled.div`
   min-height: 100%;
   display: flex;
@@ -32,8 +30,6 @@ export const Row = styled.div<{ $gap?: number; $wrap?: boolean }>`
 export const Spacer = styled.div`
   flex: 1;
 `;
-
-/* ---------- buttons ---------- */
 
 type ButtonTone = "primary" | "neutral" | "ghost" | "danger";
 
@@ -110,7 +106,6 @@ export const Button = styled.button<{ $tone?: ButtonTone; $size?: "sm" | "md" }>
   }
 `;
 
-/** A square icon button, used for the "..." menu and the column add button. */
 export const IconButton = styled.button`
   display: inline-flex;
   align-items: center;
@@ -137,8 +132,6 @@ export const IconButton = styled.button`
   }
 `;
 
-/* ---------- surfaces ---------- */
-
 export const Card = styled.div`
   background: ${theme.color.surface};
   border: 1px solid ${theme.color.border};
@@ -159,8 +152,6 @@ export const Badge = styled.span<{ $fg: string; $bg: string }>`
   white-space: nowrap;
 `;
 
-/* ---------- typography ---------- */
-
 export const Muted = styled.p`
   color: ${theme.color.textMuted};
   font-size: 14px;
@@ -170,8 +161,6 @@ export const Faint = styled.span`
   color: ${theme.color.textFaint};
   font-size: 12px;
 `;
-
-/* ---------- forms ---------- */
 
 export const Label = styled.label`
   display: block;

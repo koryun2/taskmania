@@ -13,10 +13,10 @@ api/data/
 
 # Node
 node_modules/
-web/dist/
-web/.vite/
-web/coverage/
-web/tsconfig.tsbuildinfo
+taskmania/dist/
+taskmania/.vite/
+taskmania/coverage/
+taskmania/tsconfig.tsbuildinfo
 npm-debug.log*
 
 # Editors

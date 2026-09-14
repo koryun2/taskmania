@@ -8,7 +8,6 @@ interface TaskColumnProps {
   tasks: Task[];
   isBusy: (id: string) => boolean;
   actions: TaskActions;
-  /** Only the first column offers a shortcut to add, so this is optional. */
   onAdd?: () => void;
 }
 
@@ -27,8 +26,6 @@ export function TaskColumn({ column, tasks, isBusy, actions, onAdd }: TaskColumn
         </div>
 
         {onAdd ? (
-          // Distinct from the header's "New task" so both can be found by
-          // name in tests and by screen reader users.
           <Add type="button" onClick={onAdd} aria-label="Add a to-do">
             +
           </Add>

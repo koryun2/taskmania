@@ -45,12 +45,12 @@ jobs:
       - name: Build
         run: go build ./...
 
-  web:
-    name: Web
+  taskmania:
+    name: TaskMania
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: web
+        working-directory: taskmania
     steps:
       - uses: actions/checkout@v4
 
@@ -58,7 +58,7 @@ jobs:
         with:
           node-version: "24"
           cache: npm
-          cache-dependency-path: web/package-lock.json
+          cache-dependency-path: taskmania/package-lock.json
 
       - name: Install
         run: npm ci
