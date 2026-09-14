@@ -1,8 +1,8 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Meta, MetaLabel, MetaRow } from "./TaskDetailDialog.styles";
 import { formatExact, formatWhen } from "../../lib/format";
 import type { Importance, Status, Task, TaskPatch } from "../../lib/types";
-import { Button, FieldError, Input, Label, Stack, Textarea } from "../../styles/ui";
+import { Button, FieldError, Input, Label, Select, Stack, Textarea } from "../../styles/ui";
 import { STATUS_LABELS } from "../../constants/board";
 import { DialogShell } from "../DialogShell";
 import { ImportancePicker } from "../ImportancePicker";
@@ -25,13 +25,23 @@ export function TaskDetailDialog({ task, saving, onSave, onClose }: TaskDetailDi
   const descriptionId = useId();
   const importanceId = useId();
   const statusId = useId();
+  const titleRef = useRef<HTMLInputElement>(null);
 
-  // Nothing changed means nothing to send, which also avoids burning a version.
   const dirty =
     title !== task.title ||
     description !== task.description ||
     importance !== task.importance ||
     status !== task.status;
+
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -39,6 +49,7 @@ export function TaskDetailDialog({ task, saving, onSave, onClose }: TaskDetailDi
 
     if (title.trim() === "") {
       setTitleError("Title is required.");
+      titleRef.current?.focus();
       return;
     }
     setTitleError(null);
@@ -72,7 +83,11 @@ export function TaskDetailDialog({ task, saving, onSave, onClose }: TaskDetailDi
           <div>
             <Label htmlFor={titleId}>Title</Label>
             <Input
+              ref={titleRef}
               id={titleId}
+              name="title"
+              type="text"
+              autoComplete="off"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               maxLength={200}
@@ -86,9 +101,11 @@ export function TaskDetailDialog({ task, saving, onSave, onClose }: TaskDetailDi
             <Label htmlFor={descriptionId}>Description</Label>
             <Textarea
               id={descriptionId}
+              name="description"
+              autoComplete="off"
               value={description}
               onChange={(event) => setDescription(event.target.value)}
-              placeholder="No description yet"
+              placeholder="No description yet…"
               maxLength={2000}
               disabled={saving}
             />
@@ -96,8 +113,9 @@ export function TaskDetailDialog({ task, saving, onSave, onClose }: TaskDetailDi
 
           <div>
             <Label htmlFor={statusId}>Status</Label>
-            <select
+            <Select
               id={statusId}
+              name="status"
               value={status}
               disabled={saving}
               onChange={(event) => setStatus(event.target.value as Status)}
@@ -107,7 +125,7 @@ export function TaskDetailDialog({ task, saving, onSave, onClose }: TaskDetailDi
                   {STATUS_LABELS[option]}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
 
           <div>

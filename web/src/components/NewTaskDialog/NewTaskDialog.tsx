@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { ApiError } from "../../lib/api";
 import type { Importance, NewTaskInput, Status, Task } from "../../lib/types";
 import { Button, FieldError, Input, Label, Stack, Textarea } from "../../styles/ui";
@@ -25,15 +25,15 @@ export function NewTaskDialog({ initialStatus = "todo", onCreate, onClose }: New
   const descriptionId = useId();
   const importanceId = useId();
   const titleErrorId = `${titleId}-error`;
+  const titleRef = useRef<HTMLInputElement>(null);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (saving) return;
 
-    // Checked here as well as on the server so the common mistake is caught
-    // without a round trip.
     if (title.trim() === "") {
       setFieldErrors({ title: "Title is required." });
+      titleRef.current?.focus();
       return;
     }
 
@@ -52,6 +52,7 @@ export function NewTaskDialog({ initialStatus = "todo", onCreate, onClose }: New
       // Field errors belong next to their inputs, so the dialog stays open.
       if (error instanceof ApiError) {
         setFieldErrors(error.fields);
+        if (error.fields.title) titleRef.current?.focus();
         if (Object.keys(error.fields).length === 0) setFormError(error.message);
       } else {
         setFormError("Something went wrong. Please try again.");
@@ -83,10 +84,14 @@ export function NewTaskDialog({ initialStatus = "todo", onCreate, onClose }: New
           <div>
             <Label htmlFor={titleId}>Title</Label>
             <Input
+              ref={titleRef}
               id={titleId}
+              name="title"
+              type="text"
+              autoComplete="off"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
-              placeholder="What needs doing?"
+              placeholder="Ship the weekly report…"
               maxLength={200}
               aria-invalid={Boolean(fieldErrors.title)}
               aria-describedby={fieldErrors.title ? titleErrorId : undefined}
@@ -98,9 +103,11 @@ export function NewTaskDialog({ initialStatus = "todo", onCreate, onClose }: New
             <Label htmlFor={descriptionId}>Description</Label>
             <Textarea
               id={descriptionId}
+              name="description"
+              autoComplete="off"
               value={description}
               onChange={(event) => setDescription(event.target.value)}
-              placeholder="Any detail worth remembering (optional)"
+              placeholder="Links, notes, anything worth keeping…"
               maxLength={2000}
               aria-invalid={Boolean(fieldErrors.description)}
             />

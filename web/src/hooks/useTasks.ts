@@ -92,9 +92,12 @@ export function useTasks(view: View): UseTasks {
    * A 409 means someone else changed the task, so the only useful response is
    * to reload and show what is actually there now.
    */
+  const markBusy = busy.add;
+  const clearBusy = busy.remove;
+
   const mutate = useCallback(
     async (id: string, run: () => Promise<void>): Promise<void> => {
-      busy.add(id);
+      markBusy(id);
       setState((current) => ({ ...current, mutationError: null }));
       try {
         await run();
@@ -106,10 +109,10 @@ export function useTasks(view: View): UseTasks {
         }
         setState((current) => ({ ...current, mutationError: messageFor(error) }));
       } finally {
-        busy.remove(id);
+        clearBusy(id);
       }
     },
-    [busy, reload],
+    [markBusy, clearBusy, reload],
   );
 
   const replace = useCallback((updated: Task) => {
@@ -137,7 +140,7 @@ export function useTasks(view: View): UseTasks {
           ...current,
           tasks: [created, ...current.tasks],
           total: current.total + 1,
-          notice: `Added "${created.title}".`,
+          notice: `Added “${created.title}”.`,
         }));
         return created;
       } catch (error: unknown) {
@@ -177,7 +180,7 @@ export function useTasks(view: View): UseTasks {
     (task: Task) =>
       mutate(task.id, async () => {
         await api.updateTask(task.id, { archived: true, version: task.version });
-        drop(task.id, `Archived "${task.title}".`);
+        drop(task.id, `Archived “${task.title}”.`);
       }),
     [mutate, drop],
   );
@@ -186,7 +189,7 @@ export function useTasks(view: View): UseTasks {
     (task: Task) =>
       mutate(task.id, async () => {
         await api.updateTask(task.id, { archived: false, version: task.version });
-        drop(task.id, `Restored "${task.title}" to the board.`);
+        drop(task.id, `Restored “${task.title}” to the board.`);
       }),
     [mutate, drop],
   );
@@ -195,7 +198,7 @@ export function useTasks(view: View): UseTasks {
     (task: Task) =>
       mutate(task.id, async () => {
         await api.deleteTask(task.id);
-        drop(task.id, `Deleted "${task.title}".`);
+        drop(task.id, `Deleted “${task.title}”.`);
       }),
     [mutate, drop],
   );

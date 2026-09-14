@@ -35,6 +35,7 @@ async function renderApp() {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  window.history.replaceState(null, "", "http://localhost:3000/#board");
   givenTasks();
 });
 
@@ -268,12 +269,12 @@ describe("archive", () => {
     await waitFor(() => {
       expect(mocked.updateTask).toHaveBeenCalledWith(task.id, { archived: true, version: 1 });
     });
-    expect(await screen.findByText('Archived "Filed away".')).toBeInTheDocument();
+    expect(await screen.findByText("Archived “Filed away”.")).toBeInTheDocument();
   });
 
   it("requests archived tasks when the archive view is opened", async () => {
     await renderApp();
-    await userEvent.click(screen.getByRole("button", { name: "Archive" }));
+    await userEvent.click(screen.getByRole("link", { name: "Archive" }));
 
     await waitFor(() => {
       expect(mocked.listTasks).toHaveBeenLastCalledWith(
@@ -284,11 +285,31 @@ describe("archive", () => {
     expect(await screen.findByText("The archive is empty")).toBeInTheDocument();
   });
 
+  it("asks before deleting a task", async () => {
+    const task = makeTask({ title: "Throwaway" });
+    givenTasks(task);
+    mocked.deleteTask.mockResolvedValue(undefined);
+
+    await renderApp();
+    await userEvent.click(screen.getByRole("button", { name: "Actions for Throwaway" }));
+    await userEvent.click(screen.getByRole("menuitem", { name: "Delete" }));
+
+    expect(mocked.deleteTask).not.toHaveBeenCalled();
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByRole("heading", { name: "Delete this task?" })).toBeInTheDocument();
+
+    await userEvent.click(within(dialog).getByRole("button", { name: "Delete task" }));
+
+    await waitFor(() => {
+      expect(mocked.deleteTask).toHaveBeenCalledWith(task.id);
+    });
+  });
+
   it("marks the current view for assistive technology", async () => {
     await renderApp();
 
-    expect(screen.getByRole("button", { name: "Board" })).toHaveAttribute("aria-current", "page");
-    expect(screen.getByRole("button", { name: "Archive" })).not.toHaveAttribute("aria-current");
+    expect(screen.getByRole("link", { name: "Board" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "Archive" })).not.toHaveAttribute("aria-current");
   });
 });
 

@@ -10,6 +10,7 @@ export const Overlay = styled.div`
   justify-content: center;
   padding: ${theme.space(12)} ${theme.space(4)};
   overflow-y: auto;
+  overscroll-behavior: contain;
   background: rgba(19, 26, 46, 0.45);
 `;
 
@@ -24,6 +25,11 @@ export const Panel = styled.div`
      control, so it should not show a ring of its own. */
   &:focus {
     outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${theme.color.accent};
+    outline-offset: 2px;
   }
 `;
 

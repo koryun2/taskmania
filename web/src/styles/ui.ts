@@ -210,6 +210,11 @@ export const Textarea = styled.textarea`
   resize: vertical;
 `;
 
+export const Select = styled.select`
+  ${field}
+  appearance: auto;
+`;
+
 export const FieldError = styled.p`
   margin-top: ${theme.space(1)};
   color: ${theme.color.danger};

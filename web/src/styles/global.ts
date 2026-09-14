@@ -31,6 +31,11 @@ export const GlobalStyle = createGlobalStyle`
   button {
     font: inherit;
     color: inherit;
+    touch-action: manipulation;
+  }
+
+  a {
+    touch-action: manipulation;
   }
 
   /* A single visible focus ring everywhere, since the board is fully keyboard

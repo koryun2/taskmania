@@ -12,6 +12,7 @@ export const Heading = styled.h1`
   font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.02em;
+  text-wrap: pretty;
 `;
 
 export const Subtitle = styled.p`

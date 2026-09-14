@@ -6,11 +6,14 @@ import { focusableWithin } from "../lib/focus";
  * focus moves in on open, Tab cycles inside it, Escape closes it, and focus
  * returns to whatever opened it.
  *
- * Without the trap, Tab walks into the page behind the overlay, where the
- * content is visually covered but still reachable.
+ * onClose is read from a ref so the trap is not torn down and rebuilt whenever
+ * the parent passes a new callback (see vercel-react-best-practices:
+ * store event handlers in refs).
  */
 export function useDialogFocus(onClose: () => void) {
   const ref = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     const dialog = ref.current;
@@ -28,7 +31,7 @@ export function useDialogFocus(onClose: () => void) {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.stopPropagation();
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (event.key !== "Tab") return;
@@ -43,7 +46,6 @@ export function useDialogFocus(onClose: () => void) {
       const last = targets[targets.length - 1]!;
       const active = document.activeElement;
 
-      // Wrap at whichever end we are about to fall off.
       if (event.shiftKey && (active === first || active === dialog)) {
         event.preventDefault();
         last.focus();
@@ -60,7 +62,7 @@ export function useDialogFocus(onClose: () => void) {
       delete document.body.dataset.dialogOpen;
       opener?.focus?.();
     };
-  }, [onClose]);
+  }, []);
 
   return ref;
 }

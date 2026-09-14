@@ -10,6 +10,14 @@ export const VIEWS: readonly ViewConfig[] = [
   { id: "archive", label: "Archive" },
 ] as const;
 
+export function viewFromHash(hash: string): View {
+  return hash === "#archive" ? "archive" : "board";
+}
+
+export function hashForView(view: View): string {
+  return view === "archive" ? "#archive" : "#board";
+}
+
 /** Copy shown when a list has nothing in it, so each empty state reads right. */
 export const EMPTY_COPY: Record<View, { title: string; body: string }> = {
   board: {

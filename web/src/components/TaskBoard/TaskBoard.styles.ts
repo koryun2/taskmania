@@ -51,6 +51,7 @@ export const Count = styled.span`
   color: ${theme.color.textMuted};
   font-size: 12px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
 `;
 
 export const Hint = styled.p`

@@ -49,7 +49,7 @@ export const Nav = styled.nav`
   background: ${theme.color.surfaceMuted};
 `;
 
-export const NavLink = styled.button<{ $active: boolean }>`
+export const NavLink = styled.a<{ $active: boolean }>`
   padding: ${theme.space(1.5)} ${theme.space(3)};
   border: none;
   border-radius: ${theme.radius.sm};
@@ -58,6 +58,7 @@ export const NavLink = styled.button<{ $active: boolean }>`
   box-shadow: ${(p) => (p.$active ? theme.shadow.card : "none")};
   font-size: 14px;
   font-weight: ${(p) => (p.$active ? 600 : 500)};
+  text-decoration: none;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 
