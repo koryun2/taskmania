@@ -29,7 +29,7 @@ export function TaskMenu({ task, disabled, onArchive, onRestore, onDelete }: Tas
         {...menu.triggerProps}
         onClick={menu.toggle}
       >
-        <Dots aria-hidden="true">&#8943;</Dots>
+        <Dots aria-hidden="true">&#8942;</Dots>
       </IconButton>
 
       {menu.open ? (

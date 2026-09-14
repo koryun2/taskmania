@@ -46,6 +46,8 @@ export const OpenTarget = styled.button`
 `;
 
 export const Head = styled.div`
+  position: relative;
+  z-index: ${theme.layer.menu};
   display: flex;
   align-items: flex-start;
   gap: ${theme.space(2)};
