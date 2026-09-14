@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: taskmania
+      POSTGRES_PASSWORD: taskmania
+      POSTGRES_DB: taskmania
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taskmania -d taskmania"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: ./api
+    environment:
+      PORT: "8080"
+      DATABASE_URL: postgres://taskmania:taskmania@db:5432/taskmania?sslmode=disable
+      # The browser talks to nginx, so that is the origin the API must allow.
+      CORS_ORIGINS: http://localhost:3000
+      LOG_JSON: "true"
+    ports:
+      - "8080:8080"
+    depends_on:
+      # Waits for a database that actually accepts connections, not just a
+      # started container, so the API does not fail its first migration.
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./web
+      args:
+        # Relative, so the browser calls nginx and nginx proxies to the API.
+        VITE_API_BASE: /api
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+volumes:
+  db-data:
