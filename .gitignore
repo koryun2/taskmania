@@ -16,6 +16,7 @@ node_modules/
 web/dist/
 web/.vite/
 web/coverage/
+web/tsconfig.tsbuildinfo
 npm-debug.log*
 
 # Editors
