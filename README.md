@@ -24,6 +24,28 @@ cd taskmania && npm test
 
 `docker compose up --build` runs the full stack on http://localhost:3000.
 
+## Deploy
+
+The UI goes on Vercel. The API and Postgres go on Railway.
+
+**Railway.** New project, add Postgres, then a service whose root is `api/` (it uses the Dockerfile). Share `DATABASE_URL` from Postgres onto that service. Generate a public domain. Set:
+
+```
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+CORS_ORIGINS=https://YOUR-APP.vercel.app
+LOG_JSON=true
+```
+
+Railway sets `PORT`. Open `/health` on the public domain before wiring the frontend.
+
+**Vercel.** Import the GitHub repo (leave the root as the repo). Set:
+
+```
+VITE_API_BASE=https://YOUR-API.up.railway.app
+```
+
+That value is baked in at build time, so change it and redeploy. Then put the Vercel origin into Railway `CORS_ORIGINS` and redeploy the API.
+
 ## Concurrent edits
 
 Each task has a `version`. Updates must send it, and the database enforces it:

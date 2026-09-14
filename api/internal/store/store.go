@@ -134,7 +134,7 @@ func resolve(databaseURL string) (driver, dsn string, err error) {
 
 	switch {
 	case strings.HasPrefix(url, "postgres://"), strings.HasPrefix(url, "postgresql://"):
-		return DriverPostgres, url, nil
+		return DriverPostgres, postgresDSN(url), nil
 
 	case url == ":memory:":
 		return DriverSQLite, url, nil
@@ -161,6 +161,22 @@ func resolve(databaseURL string) (driver, dsn string, err error) {
 		}
 		return DriverSQLite, "file:" + url, nil
 	}
+}
+
+// postgresDSN fills in sslmode when the URL omitted it. Private Railway and
+// localhost have no TLS; a public Postgres URL is expected to require it.
+func postgresDSN(url string) string {
+	if strings.Contains(url, "sslmode=") {
+		return url
+	}
+	sep := "?"
+	if strings.Contains(url, "?") {
+		sep = "&"
+	}
+	if strings.Contains(url, ".railway.internal") || strings.Contains(url, "localhost") || strings.Contains(url, "127.0.0.1") {
+		return url + sep + "sslmode=disable"
+	}
+	return url + sep + "sslmode=require"
 }
 
 // ensureParentDir creates the directory holding a SQLite file so pointing
