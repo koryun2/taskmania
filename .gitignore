@@ -1,0 +1,28 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Go
+api/server
+api/server.exe
+api/data/
+*.db
+*.db-shm
+*.db-wal
+
+# Node
+node_modules/
+web/dist/
+web/.vite/
+web/coverage/
+npm-debug.log*
+
+# Editors
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

@@ -1,0 +1,11 @@
+# Normalize to LF everywhere. Go tooling treats CRLF as a formatting error, so
+# without this a Windows checkout fails `gofmt -l` in CI.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.db  binary
