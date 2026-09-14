@@ -7,7 +7,6 @@ import { useBusyIds } from "./useBusyIds";
 
 interface TasksState {
   tasks: Task[];
-  total: number;
   loading: boolean;
   /** Set when the list itself could not load, so the page shows a retry. */
   loadError: string | null;
@@ -18,14 +17,13 @@ interface TasksState {
 
 const initialState: TasksState = {
   tasks: [],
-  total: 0,
   loading: true,
   loadError: null,
   mutationError: null,
   notice: null,
 };
 
-export interface UseTasks extends TasksState {
+interface UseTasks extends TasksState {
   isBusy: (id: string) => boolean;
   reload: () => void;
   createTask: (input: NewTaskInput) => Promise<Task | null>;
@@ -67,7 +65,6 @@ export function useTasks(view: View): UseTasks {
         setState((current) => ({
           ...current,
           tasks: page.items,
-          total: page.total,
           loading: false,
           loadError: null,
         }));
@@ -116,7 +113,6 @@ export function useTasks(view: View): UseTasks {
     setState((current) => ({
       ...current,
       tasks: current.tasks.filter((task) => task.id !== id),
-      total: Math.max(0, current.total - 1),
       notice,
     }));
   }, []);
@@ -129,7 +125,6 @@ export function useTasks(view: View): UseTasks {
         setState((current) => ({
           ...current,
           tasks: [created, ...current.tasks],
-          total: current.total + 1,
           notice: `Added “${created.title}”.`,
         }));
         return created;

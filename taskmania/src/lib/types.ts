@@ -2,7 +2,6 @@ export type Status = "todo" | "in_progress" | "done";
 
 export type Importance = "low" | "medium" | "high";
 
-/** Mirrors the JSON the Go API returns, field for field. */
 export interface Task {
   id: string;
   title: string;
@@ -51,7 +50,6 @@ export interface TaskQuery {
   limit?: number;
 }
 
-/** The actions a task card can trigger, passed down as one object. */
 export interface TaskActions {
   onMove: (task: Task, status: Status) => void;
   onArchive: (task: Task) => void;

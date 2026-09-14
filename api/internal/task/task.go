@@ -12,7 +12,6 @@ import (
 	"unicode/utf8"
 )
 
-// Status is where a task sits on the board.
 type Status string
 
 const (

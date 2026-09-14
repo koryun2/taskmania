@@ -11,7 +11,6 @@ import (
 	"github.com/koryun2/taskmania/internal/task"
 )
 
-// Tasks is the data access layer for the board.
 type Tasks struct {
 	db *DB
 }

@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-export interface BusyIds {
+interface BusyIds {
   has: (id: string) => boolean;
   add: (id: string) => void;
   remove: (id: string) => void;

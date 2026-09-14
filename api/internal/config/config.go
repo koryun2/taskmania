@@ -15,7 +15,6 @@ type Config struct {
 	LogJSON     bool
 }
 
-// Load reads the environment and applies defaults.
 func Load() Config {
 	return Config{
 		Port:        env("PORT", "8080"),

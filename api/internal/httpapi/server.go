@@ -31,7 +31,6 @@ type Server struct {
 	origins []string
 }
 
-// New builds the router with CORS, request logging, and panic recovery applied.
 func New(db *store.DB, log *slog.Logger, origins []string) http.Handler {
 	s := &Server{
 		tasks:   store.NewTasks(db),
@@ -53,8 +52,6 @@ func New(db *store.DB, log *slog.Logger, origins []string) http.Handler {
 	// Recovery is outermost so it also covers the logging and CORS layers.
 	return s.recoverPanic(s.logRequests(s.cors(mux)))
 }
-
-// ---------- handlers ----------
 
 func (s *Server) health(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
@@ -158,8 +155,6 @@ func (s *Server) remove(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-// ---------- request parsing ----------
-
 func parseQuery(r *http.Request) (task.Query, error) {
 	raw := r.URL.Query()
 	q := task.Query{
@@ -218,8 +213,6 @@ func decode(w http.ResponseWriter, r *http.Request, dst any) error {
 	return nil
 }
 
-// ---------- errors ----------
-
 var (
 	errBadJSON  = errors.New("malformed json")
 	errTooLarge = errors.New("body too large")
@@ -271,8 +264,6 @@ func writeJSON(w http.ResponseWriter, status int, payload any) {
 	// the response; the request log still records what was sent.
 	_ = json.NewEncoder(w).Encode(payload)
 }
-
-// ---------- middleware ----------
 
 // cors answers preflights and echoes back only origins that were configured, so
 // a wildcard cannot leak into a deployment by accident.

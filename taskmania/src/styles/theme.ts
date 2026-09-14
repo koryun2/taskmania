@@ -1,4 +1,3 @@
-/** Design tokens. Every component reads from here so the palette stays in one place. */
 export const theme = {
   color: {
     canvas: "#f6f7fb",
@@ -19,8 +18,6 @@ export const theme = {
     dangerSoft: "#fdecea",
     success: "#1d7a4c",
     successSoft: "#e7f6ee",
-    warning: "#9a6210",
-    warningSoft: "#fdf2df",
   },
 
   /** One colour pair per importance level, used by the card badges. */
@@ -59,5 +56,3 @@ export const theme = {
     overlay: 100,
   },
 } as const;
-
-export type Theme = typeof theme;

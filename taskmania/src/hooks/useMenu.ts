@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
-export interface Menu {
+interface Menu {
   open: boolean;
   toggle: () => void;
   close: () => void;

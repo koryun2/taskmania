@@ -1,6 +1,6 @@
 export type View = "board" | "archive";
 
-export interface ViewConfig {
+interface ViewConfig {
   id: View;
   label: string;
 }
@@ -18,7 +18,6 @@ export function hashForView(view: View): string {
   return view === "archive" ? "#archive" : "#board";
 }
 
-/** Copy shown when a list has nothing in it, so each empty state reads right. */
 export const EMPTY_COPY: Record<View, { title: string; body: string }> = {
   board: {
     title: "Nothing on the board",

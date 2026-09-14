@@ -20,18 +20,17 @@ export const Stack = styled.div<{ $gap?: number }>`
   gap: ${(p) => theme.space(p.$gap ?? 4)};
 `;
 
-export const Row = styled.div<{ $gap?: number; $wrap?: boolean }>`
+export const Row = styled.div<{ $gap?: number }>`
   display: flex;
   align-items: center;
   gap: ${(p) => theme.space(p.$gap ?? 2)};
-  flex-wrap: ${(p) => (p.$wrap ? "wrap" : "nowrap")};
 `;
 
 export const Spacer = styled.div`
   flex: 1;
 `;
 
-type ButtonTone = "primary" | "neutral" | "ghost" | "danger";
+type ButtonTone = "primary" | "neutral" | "danger";
 
 const tones: Record<ButtonTone, ReturnType<typeof css>> = {
   primary: css`
@@ -51,16 +50,6 @@ const tones: Record<ButtonTone, ReturnType<typeof css>> = {
 
     &:hover:not(:disabled) {
       background: ${theme.color.surfaceMuted};
-    }
-  `,
-  ghost: css`
-    background: transparent;
-    border-color: transparent;
-    color: ${theme.color.textMuted};
-
-    &:hover:not(:disabled) {
-      background: ${theme.color.surfaceMuted};
-      color: ${theme.color.text};
     }
   `,
   danger: css`
@@ -132,13 +121,6 @@ export const IconButton = styled.button`
   }
 `;
 
-export const Card = styled.div`
-  background: ${theme.color.surface};
-  border: 1px solid ${theme.color.border};
-  border-radius: ${theme.radius.lg};
-  box-shadow: ${theme.shadow.card};
-`;
-
 export const Badge = styled.span<{ $fg: string; $bg: string }>`
   display: inline-flex;
   align-items: center;
@@ -150,11 +132,6 @@ export const Badge = styled.span<{ $fg: string; $bg: string }>`
   font-weight: 600;
   letter-spacing: 0.01em;
   white-space: nowrap;
-`;
-
-export const Muted = styled.p`
-  color: ${theme.color.textMuted};
-  font-size: 14px;
 `;
 
 export const Faint = styled.span`
