@@ -1,27 +1,15 @@
-import { Counts, Heading, Subtitle, Wrap } from "./PageHero.styles";
-import { Row } from "../../styles/ui";
+import { Heading, Subtitle, Wrap } from "./PageHero.styles";
 
 interface PageHeroProps {
   title: string;
-  subtitle: string;
-  /** Rendered as a live region so the count is announced after a change. */
-  summary?: string;
+  subtitle?: string;
 }
 
-export function PageHero({ title, subtitle, summary }: PageHeroProps) {
+export function PageHero({ title, subtitle }: PageHeroProps) {
   return (
     <Wrap>
-      <Row $gap={4} $wrap>
-        <div>
-          <Heading>{title}</Heading>
-          <Subtitle>{subtitle}</Subtitle>
-        </div>
-      </Row>
-      {summary ? (
-        <Counts role="status" aria-live="polite">
-          {summary}
-        </Counts>
-      ) : null}
+      <Heading>{title}</Heading>
+      {subtitle ? <Subtitle>{subtitle}</Subtitle> : null}
     </Wrap>
   );
 }

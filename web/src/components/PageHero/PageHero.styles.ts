@@ -19,8 +19,3 @@ export const Subtitle = styled.p`
   color: ${theme.color.textMuted};
   font-size: 15px;
 `;
-
-export const Counts = styled.p`
-  color: ${theme.color.textFaint};
-  font-size: 13px;
-`;

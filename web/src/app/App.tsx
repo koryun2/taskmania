@@ -66,12 +66,7 @@ export function App() {
         <Container>
           <PageHero
             title={isBoard ? "Your board" : "Archive"}
-            subtitle={
-              isBoard
-                ? "Everything you are planning, working on, and have finished."
-                : "Tasks you have filed away. Restore anything you still need."
-            }
-            summary={tasks.loading ? undefined : `${tasks.total} ${tasks.total === 1 ? "task" : "tasks"}`}
+            subtitle={isBoard ? undefined : "Tasks you have filed away. Restore anything you still need."}
           />
 
           <Stack $gap={4}>

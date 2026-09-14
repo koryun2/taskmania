@@ -131,11 +131,6 @@ export function TaskDetailDialog({ task, saving, onSave, onClose }: TaskDetailDi
               <MetaLabel>Updated</MetaLabel>
               <span title={formatExact(task.updated_at)}>{formatWhen(task.updated_at)}</span>
             </MetaRow>
-            <MetaRow>
-              {/* Surfaced because it is what the conflict message refers to. */}
-              <MetaLabel>Revision</MetaLabel>
-              <span>v{task.version}</span>
-            </MetaRow>
           </Meta>
         </Stack>
       </form>
