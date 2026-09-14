@@ -16,19 +16,14 @@ func TestPostgresDSN(t *testing.T) {
 			want: "postgres://u:p@host:5432/db?sslmode=disable",
 		},
 		{
-			name: "private Railway has no TLS",
-			in:   "postgresql://u:p@postgres.railway.internal:5432/railway",
-			want: "postgresql://u:p@postgres.railway.internal:5432/railway?sslmode=disable",
-		},
-		{
 			name: "local Postgres has no TLS",
 			in:   "postgres://u:p@localhost:5432/db",
 			want: "postgres://u:p@localhost:5432/db?sslmode=disable",
 		},
 		{
-			name: "public Postgres requires TLS",
-			in:   "postgres://u:p@proxy.rlwy.net:5432/railway",
-			want: "postgres://u:p@proxy.rlwy.net:5432/railway?sslmode=require",
+			name: "remote Postgres requires TLS",
+			in:   "postgres://u:p@db.example.com:5432/app",
+			want: "postgres://u:p@db.example.com:5432/app?sslmode=require",
 		},
 	}
 

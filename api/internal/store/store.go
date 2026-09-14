@@ -163,8 +163,8 @@ func resolve(databaseURL string) (driver, dsn string, err error) {
 	}
 }
 
-// postgresDSN fills in sslmode when the URL omitted it. Private Railway and
-// localhost have no TLS; a public Postgres URL is expected to require it.
+// postgresDSN fills in sslmode when the URL omitted it. Local Postgres has no
+// TLS; a remote URL is expected to require it.
 func postgresDSN(url string) string {
 	if strings.Contains(url, "sslmode=") {
 		return url
@@ -173,7 +173,7 @@ func postgresDSN(url string) string {
 	if strings.Contains(url, "?") {
 		sep = "&"
 	}
-	if strings.Contains(url, ".railway.internal") || strings.Contains(url, "localhost") || strings.Contains(url, "127.0.0.1") {
+	if strings.Contains(url, "localhost") || strings.Contains(url, "127.0.0.1") {
 		return url + sep + "sslmode=disable"
 	}
 	return url + sep + "sslmode=require"

@@ -1,8 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "vite",
-  "installCommand": "npm ci --prefix taskmania",
-  "buildCommand": "npm run build --prefix taskmania",
-  "outputDirectory": "taskmania/dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}
